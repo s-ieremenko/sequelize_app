@@ -12,15 +12,9 @@ import {
   IsUUID,
   IsIn,
 } from 'sequelize-typescript';
+import PERMISSIONS from '../enums';
 import PermissionRole from './permission_role.model';
 import Role from './role.model';
-
-export enum PERMISSIONS {
-  CREATE = 'CREATE',
-  READ = 'READ',
-  UPDATE = 'UPDATE',
-  DELETE = 'DELETE',
-}
 
 @Table({
   tableName: 'permissions',

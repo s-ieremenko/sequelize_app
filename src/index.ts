@@ -2,7 +2,7 @@ import { IsUUID, Sequelize } from 'sequelize-typescript';
 import express, { Express } from 'express';
 import User from './models/user.model';
 import Role from './models/role.model';
-import Permission, { PERMISSIONS } from './models/permission.model';
+import Permission from './models/permission.model';
 import { v4 as uuidv4 } from 'uuid';
 import PermissionRole from './models/permission_role.model';
 import {
@@ -17,6 +17,7 @@ import {
   roleModerator,
   roleUser,
 } from './constants';
+import PERMISSIONS from './enums';
 
 app.listen(port, () => {
   console.log(`App running at http://localhost:${port}`);
