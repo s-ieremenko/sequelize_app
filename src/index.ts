@@ -1,22 +1,8 @@
-import { IsUUID, Sequelize } from 'sequelize-typescript';
-import express, { Express } from 'express';
 import User from './models/user.model';
 import Role from './models/role.model';
 import Permission from './models/permission.model';
 import { v4 as uuidv4 } from 'uuid';
-import PermissionRole from './models/permission_role.model';
-import {
-  port,
-  app,
-  sequelize,
-  permissionCreate,
-  permissionRead,
-  permissionUpdate,
-  permissionDelete,
-  roleAdmin,
-  roleModerator,
-  roleUser,
-} from './constants';
+import { port, app, sequelize } from './constants';
 import PERMISSIONS from './enums';
 
 app.listen(port, () => {
@@ -27,80 +13,63 @@ app.listen(port, () => {
       try {
         await sequelize.sync({ force: true });
 
-        await Permission.create({
-          uuid: permissionCreate,
+        const permissionCreate = await Permission.create({
+          uuid: uuidv4(),
           name: PERMISSIONS.CREATE,
         });
-        await Permission.create({
-          uuid: permissionRead,
+        const permissionRead = await Permission.create({
+          uuid: uuidv4(),
           name: PERMISSIONS.READ,
         });
-        await Permission.create({
-          uuid: permissionUpdate,
+        const permissionUpdate = await Permission.create({
+          uuid: uuidv4(),
           name: PERMISSIONS.UPDATE,
         });
-        await Permission.create({
-          uuid: permissionDelete,
+        const permissionDelete = await Permission.create({
+          uuid: uuidv4(),
           name: PERMISSIONS.DELETE,
         });
-        await Role.create({ uuid: roleAdmin, name: 'Admin' });
-        await Role.create({ uuid: roleModerator, name: 'Moderator' });
-        await Role.create({ uuid: roleUser, name: 'User' });
-        await PermissionRole.create({
-          roleId: roleAdmin,
-          permissionId: permissionCreate,
-        });
-        await PermissionRole.create({
-          roleId: roleAdmin,
-          permissionId: permissionRead,
-        });
-        await PermissionRole.create({
-          roleId: roleAdmin,
-          permissionId: permissionUpdate,
-        });
-        await PermissionRole.create({
-          roleId: roleAdmin,
-          permissionId: permissionDelete,
-        });
 
-        await PermissionRole.create({
-          roleId: roleModerator,
-          permissionId: permissionUpdate,
+        const roleAdmin = await Role.create({ uuid: uuidv4(), name: 'Admin' });
+        const roleModerator = await Role.create({
+          uuid: uuidv4(),
+          name: 'Moderator',
         });
-        await PermissionRole.create({
-          roleId: roleModerator,
-          permissionId: permissionCreate,
-        });
+        const roleUser = await Role.create({ uuid: uuidv4(), name: 'User' });
 
-        await PermissionRole.create({
-          roleId: roleUser,
-          permissionId: permissionRead,
-        });
-
-        await User.create({
+        const user1 = await User.create({
           uuid: uuidv4(),
           name: 'Max',
           email: 'max@mail.com',
-          roleId: roleAdmin,
         });
-        await User.create({
+        const user2 = await User.create({
           uuid: uuidv4(),
           name: 'Vasya',
           email: 'vasya@mail.com',
-          roleId: roleUser,
         });
-        await User.create({
+        const user3 = await User.create({
           uuid: uuidv4(),
           name: 'Alex',
           email: 'alex@mail.com',
-          roleId: roleModerator,
         });
-        await User.create({
+        const user4 = await User.create({
           uuid: uuidv4(),
           name: 'Petya',
           email: 'petya@mail.com',
-          roleId: roleUser,
         });
+
+        roleAdmin.$add('permissions', [
+          permissionCreate,
+          permissionRead,
+          permissionDelete,
+          permissionUpdate,
+        ]);
+        roleModerator.$add('permissions', [permissionCreate, permissionUpdate]);
+        roleUser.$add('permissions', [permissionRead]);
+
+        roleAdmin.$add('users', [user1]);
+        roleModerator.$add('users', [user2]);
+        roleUser.$add('users', [user3, user4]);
       } catch (error: any) {
         console.log(error.message);
       }
