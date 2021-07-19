@@ -58,18 +58,21 @@ app.listen(port, () => {
           email: 'petya@mail.com',
         });
 
-        roleAdmin.$add('permissions', [
+        await roleAdmin.$add('permissions', [
           permissionCreate,
           permissionRead,
           permissionDelete,
           permissionUpdate,
         ]);
-        roleModerator.$add('permissions', [permissionCreate, permissionUpdate]);
-        roleUser.$add('permissions', [permissionRead]);
+        await roleModerator.$add('permissions', [
+          permissionCreate,
+          permissionUpdate,
+        ]);
+        await roleUser.$add('permissions', [permissionRead]);
 
-        roleAdmin.$add('users', [user1]);
-        roleModerator.$add('users', [user2]);
-        roleUser.$add('users', [user3, user4]);
+        await roleAdmin.$add('users', [user1]);
+        await roleModerator.$add('users', [user2]);
+        await roleUser.$add('users', [user3, user4]);
       } catch (error: any) {
         console.log(error.message);
       }
