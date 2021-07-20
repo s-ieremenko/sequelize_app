@@ -1,9 +1,13 @@
+import express, { Express } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+
 import User from './models/user.model';
 import Role from './models/role.model';
 import Permission from './models/permission.model';
-import { v4 as uuidv4 } from 'uuid';
-import { port, app, sequelize } from './constants';
+import { port, sequelize } from './constants';
 import PERMISSIONS from './enums';
+
+const app: Express = express();
 
 app.listen(port, () => {
   console.log(`App running at http://localhost:${port}`);

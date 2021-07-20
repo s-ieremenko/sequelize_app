@@ -12,6 +12,7 @@ import {
   IsEmail,
   BelongsTo,
 } from 'sequelize-typescript';
+
 import Role from './role.model';
 
 @Table({

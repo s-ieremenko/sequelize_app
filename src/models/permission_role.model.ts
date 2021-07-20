@@ -12,6 +12,7 @@ import {
   IsEmail,
   BelongsTo,
 } from 'sequelize-typescript';
+
 import Permission from './permission.model';
 import Role from './role.model';
 
