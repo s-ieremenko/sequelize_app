@@ -12,6 +12,7 @@ const dbDialect: Dialect = 'mysql';
 const dbHost: string = 'localhost';
 const pathToModels: ModelCtor[] = [User, Role, Permission, PermissionRole];
 
+export const port: number = 3000;
 export const ok: number = 200;
 export const notFound: number = 404;
 export const badRequest: number = 400;
@@ -21,4 +22,3 @@ export const sequelize: Sequelize = new Sequelize(db, dbLogin, dbPassword, {
   host: dbHost,
   models: pathToModels,
 });
-export const port: number = 3000;

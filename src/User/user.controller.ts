@@ -1,5 +1,6 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { badRequest, notFound, ok } from '../common/constants';
+import { UserAttributes } from './user.interfaces';
 import User from './user.model';
 import { addRoleForUser, createUser, getUsers } from './user.service';
 
@@ -14,30 +15,32 @@ export class UserController {
   }
 
   static async create(request: Request, response: Response): Promise<void> {
-    if (!request.body.name || !request.body.email) {
+    const { name, email }: UserAttributes = request.body;
+    if (!name || !email) {
       response.status(badRequest).send('Fields "name" or "email" required');
     }
     try {
-      await createUser(request);
+      await createUser(name, email);
       response.status(ok).send('User is created');
     } catch (error: any) {
-      console.log(error.message);
       response.status(badRequest).send(error.message);
     }
   }
   static async update(request: Request, response: Response): Promise<void> {
-    if (!request.body.userUuid || !request.body.roleUuid) {
+    const { userUuid, roleUuid }: { userUuid: string; roleUuid: string } =
+      request.body;
+    if (!userUuid || !roleUuid) {
       response
         .status(badRequest)
         .send('Fields "userUuid" or "roleUuid" required');
     }
     try {
-      await addRoleForUser(request);
+      await addRoleForUser(userUuid, roleUuid);
       response.status(ok).send('Role is created');
     } catch (error: any) {
-      console.log(error.message);
       response.status(badRequest).send(error.message);
     }
   }
 }
+
 export default UserController;

@@ -1,5 +1,3 @@
-import { Request } from 'express';
-import { Error, Op } from 'sequelize';
 import Role from './role.model';
 import { v4 as uuidv4 } from 'uuid';
 import Permission from '../Permission/permission.model';
@@ -18,19 +16,17 @@ export const getRolesWithPermissions = async (): Promise<Role[]> => {
 };
 
 export const createRoleWithPermissions = async (
-  request: Request
+  name: string,
+  permissionUuids: string[]
 ): Promise<void> => {
-  const { name, permissionUuids }: { name: string; permissionUuids: string[] } =
-    request.body;
   const permissions: Permission[] = await Permission.findAll({
     where: {
-      uuid: { [Op.in]: permissionUuids },
+      uuid: permissionUuids,
     },
   });
   if (!permissions.length) {
     throw new Error('Wrong permissionUuids');
   }
-
   const role: Role = await Role.create({
     uuid: uuidv4(),
     name,
@@ -38,8 +34,10 @@ export const createRoleWithPermissions = async (
   await role.$add('permissions', permissions);
 };
 
-export const addPermissionToRole = async (request: Request): Promise<void> => {
-  const { permissionUuid, roleUuid } = request.body;
+export const addPermissionToRole = async (
+  permissionUuid: string,
+  roleUuid: string
+): Promise<void> => {
   const role: Role = await Role.findByPk(roleUuid, { include: Permission });
   const permission: Permission = await Permission.findByPk(permissionUuid, {
     include: Role,

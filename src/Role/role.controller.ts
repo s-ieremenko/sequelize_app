@@ -18,31 +18,37 @@ export class RoleController {
   }
 
   static async create(request: Request, response: Response): Promise<void> {
-    if (!request.body.name || !request.body.permissionUuids) {
+    const {
+      name,
+      permissionUuids,
+    }: { name: string; permissionUuids: string[] } = request.body;
+    if (!name || !permissionUuids) {
       response
         .status(badRequest)
         .send('Fields "name" and "permissionUuids required"');
     }
     try {
-      await createRoleWithPermissions(request);
-
+      await createRoleWithPermissions(name, permissionUuids);
       response.status(ok).send('Role is created');
     } catch (error: any) {
       response.status(badRequest).send(error.message);
     }
   }
+
   static async update(request: Request, response: Response): Promise<void> {
-    if (!request.body.roleUuid || !request.body.permissionUuid) {
-      response.status(badRequest).send('Bad request');
+    const { permissionUuid, roleUuid } = request.body;
+    if (!roleUuid || !permissionUuid) {
+      response
+        .status(badRequest)
+        .send('Fields "roleUuid" and "permissionUuid" required');
     }
     try {
-      await addPermissionToRole(request);
-
-      response.status(ok).send('ok');
+      await addPermissionToRole(permissionUuid, roleUuid);
+      response.status(ok).send('Permission added');
     } catch (error: any) {
-      console.log(error.message);
       response.status(badRequest).send(error.message);
     }
   }
 }
+
 export default RoleController;
