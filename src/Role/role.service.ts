@@ -31,7 +31,6 @@ export const createRoleWithPermissions = async (
     uuid: uuidv4(),
     name,
   });
-  // await role.$add('permissions', permissions);
   //@ts-ignore
   await role.addPermissions(permissions);
 };
