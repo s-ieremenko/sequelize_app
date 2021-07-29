@@ -20,7 +20,6 @@ import { RoleAttributes, RoleCreationAttributes } from './role.interfaces';
   timestamps: true,
 })
 class Role extends Model<RoleAttributes, RoleCreationAttributes> {
-  [x: string]: any;
   @PrimaryKey
   @IsUUID(4)
   @Column
