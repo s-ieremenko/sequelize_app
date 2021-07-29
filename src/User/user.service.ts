@@ -1,6 +1,6 @@
 import User from './user.model';
 import { v4 as uuidv4 } from 'uuid';
-import Role from '../Role/role.model';
+import Role from '../role/role.model';
 
 export const getUsers = async (): Promise<User[]> => {
   const users = await User.findAll();
@@ -14,7 +14,7 @@ export const createUser = async (
   name: string,
   email: string
 ): Promise<void> => {
-  let userExist: User = await User.findOne({
+  const userExist: User = await User.findOne({
     where: {
       email,
     },
@@ -32,10 +32,11 @@ export const addRoleForUser = async (
   userUuid: string,
   roleUuid: string
 ): Promise<void> => {
-  let user: User = await User.findByPk(userUuid);
-  let role: Role = await Role.findByPk(roleUuid);
+  const user: User = await User.findByPk(userUuid);
+  const role: Role = await Role.findByPk(roleUuid);
   if (!user || !role) {
     throw new Error('User or role not found');
   }
-  user.$set('role', role);
+  //@ts-ignore
+  await user.setRole(role);
 };

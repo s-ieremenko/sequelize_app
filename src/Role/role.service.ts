@@ -1,6 +1,6 @@
 import Role from './role.model';
 import { v4 as uuidv4 } from 'uuid';
-import Permission from '../Permission/permission.model';
+import Permission from '../permission/permission.model';
 
 export const getRolesWithPermissions = async (): Promise<Role[]> => {
   const roles: Role[] = await Role.findAll({
@@ -31,7 +31,9 @@ export const createRoleWithPermissions = async (
     uuid: uuidv4(),
     name,
   });
-  await role.$add('permissions', permissions);
+  // await role.$add('permissions', permissions);
+  //@ts-ignore
+  await role.addPermissions(permissions);
 };
 
 export const addPermissionToRole = async (
@@ -39,13 +41,13 @@ export const addPermissionToRole = async (
   roleUuid: string
 ): Promise<void> => {
   const role: Role = await Role.findByPk(roleUuid, { include: Permission });
-  const permission: Permission = await Permission.findByPk(permissionUuid, {
-    include: Role,
-  });
+  const permission: Permission = await Permission.findByPk(permissionUuid, {});
   if (!role || !permission) {
     throw new Error('Incorrect data');
   }
-  await role.$remove('permissions', role.permissions);
-  role.permissions.push(permission);
-  await role.$add('permissions', role.permissions);
+  if (role.permissions.includes(permission)) {
+    throw new Error('Permission already exists');
+  }
+  //@ts-ignore
+  role.addPermission(permission);
 };

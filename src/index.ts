@@ -1,8 +1,10 @@
 import express, { Express } from 'express';
-import userRouter from './User/user.route';
-import permissionRouter from './Permission/permission.route';
-import roleRouter from './Role/role.route';
-import { port, sequelize } from './common/constants';
+
+import userRouter from './user/user.route';
+import permissionRouter from './permission/permission.route';
+import roleRouter from './role/role.route';
+import { port } from './common/constants';
+import { sequelize } from './common/sequelize';
 
 const app: Express = express();
 

@@ -11,7 +11,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 
-import Role from '../Role/role.model';
+import Role from '../role/role.model';
 import { UserAttributes, UserCreationAttributes } from './user.interfaces';
 
 @Table({
@@ -19,6 +19,7 @@ import { UserAttributes, UserCreationAttributes } from './user.interfaces';
   timestamps: true,
 })
 class User extends Model<UserAttributes, UserCreationAttributes> {
+  [x: string]: any;
   @PrimaryKey
   @IsUUID(4)
   @Column

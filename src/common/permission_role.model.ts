@@ -1,7 +1,7 @@
 import { Model, ForeignKey, Table } from 'sequelize-typescript';
 
-import Permission from '../Permission/permission.model';
-import Role from '../Role/role.model';
+import Permission from '../permission/permission.model';
+import Role from '../role/role.model';
 
 @Table({
   tableName: 'permission_role',

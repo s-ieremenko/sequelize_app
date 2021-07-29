@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+
 import { badRequest, notFound, ok } from '../common/constants';
 import { PermissionAttributes } from './permission.interfaces';
 import Permission from './permission.model';

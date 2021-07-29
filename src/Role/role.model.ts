@@ -10,9 +10,9 @@ import {
   IsUUID,
 } from 'sequelize-typescript';
 
-import Permission from '../Permission/permission.model';
+import Permission from '../permission/permission.model';
 import PermissionRole from '../common/permission_role.model';
-import User from '../User/user.model';
+import User from '../user/user.model';
 import { RoleAttributes, RoleCreationAttributes } from './role.interfaces';
 
 @Table({
@@ -20,6 +20,7 @@ import { RoleAttributes, RoleCreationAttributes } from './role.interfaces';
   timestamps: true,
 })
 class Role extends Model<RoleAttributes, RoleCreationAttributes> {
+  [x: string]: any;
   @PrimaryKey
   @IsUUID(4)
   @Column

@@ -15,7 +15,7 @@ import {
 
 import PERMISSIONS from '../common/enums';
 import PermissionRole from '../common/permission_role.model';
-import Role from '../Role/role.model';
+import Role from '../role/role.model';
 import {
   PermissionAttributes,
   PermissionCreationAttributes,
