@@ -10,6 +10,21 @@ export const getUsers = async (): Promise<User[]> => {
   return users;
 };
 
+export const getUser = async (userUuid: string): Promise<User> => {
+  const user = await User.findByPk(userUuid, { include: Role });
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
+};
+
+export const isAdmin = async (user:User):Promise<boolean> => {
+  if(user.role.name === 'Admin') {
+    return true
+  }
+  return false
+}
+
 export const createUser = async (
   name: string,
   email: string
