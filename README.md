@@ -1,1 +1,1 @@
-# sequelize_task1
+# user-role app using sequelize + MySQL
