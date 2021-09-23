@@ -5,21 +5,20 @@ import {
   Column,
   AllowNull,
   NotEmpty,
-  HasMany,
-  BelongsToMany,
   Table,
   IsUUID,
   IsEmail,
   BelongsTo,
 } from 'sequelize-typescript';
 
-import Role from './role.model';
+import Role from '../role/role.model';
+import { UserAttributes, UserCreationAttributes } from './user.interfaces';
 
 @Table({
   tableName: 'users',
   timestamps: true,
 })
-class User extends Model {
+class User extends Model<UserAttributes, UserCreationAttributes> {
   @PrimaryKey
   @IsUUID(4)
   @Column

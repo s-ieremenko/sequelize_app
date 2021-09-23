@@ -13,15 +13,22 @@ import {
   IsIn,
 } from 'sequelize-typescript';
 
-import PERMISSIONS from '../enums';
-import PermissionRole from './permission_role.model';
-import Role from './role.model';
+import PERMISSIONS from '../common/enums';
+import PermissionRole from '../common/permission_role.model';
+import Role from '../role/role.model';
+import {
+  PermissionAttributes,
+  PermissionCreationAttributes,
+} from './permission.interfaces';
 
 @Table({
   tableName: 'permissions',
   timestamps: true,
 })
-class Permission extends Model {
+class Permission extends Model<
+  PermissionAttributes,
+  PermissionCreationAttributes
+> {
   @PrimaryKey
   @IsUUID(4)
   @Column

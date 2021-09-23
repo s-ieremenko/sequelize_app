@@ -1,6 +1,5 @@
 import {
   Model,
-  ForeignKey,
   PrimaryKey,
   Table,
   Column,
@@ -8,20 +7,19 @@ import {
   NotEmpty,
   HasMany,
   BelongsToMany,
-  IsEmail,
   IsUUID,
-  Length,
 } from 'sequelize-typescript';
 
-import Permission from './permission.model';
-import PermissionRole from './permission_role.model';
-import User from './user.model';
+import Permission from '../permission/permission.model';
+import PermissionRole from '../common/permission_role.model';
+import User from '../user/user.model';
+import { RoleAttributes, RoleCreationAttributes } from './role.interfaces';
 
 @Table({
   tableName: 'roles',
   timestamps: true,
 })
-class Role extends Model {
+class Role extends Model<RoleAttributes, RoleCreationAttributes> {
   @PrimaryKey
   @IsUUID(4)
   @Column
